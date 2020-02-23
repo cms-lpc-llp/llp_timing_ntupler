@@ -43,7 +43,7 @@ using namespace std;
 #include "TrackingTools/TrajectoryState/interface/FreeTrajectoryState.h"
 #include "TrackingTools/TrajectoryState/interface/TrajectoryStateOnSurface.h"
 #include "TrackingTools/TrajectoryState/interface/TrajectoryStateTransform.h"
-// #include "RecoTracker/DebugTools/interface/GetTrackTrajInfo.h"
+#include "RecoTracker/DebugTools/interface/GetTrackTrajInfo.h"
 
 #include "MagneticField/Records/interface/IdealMagneticFieldRecord.h"
 
@@ -148,6 +148,9 @@ using namespace std;
 #include "DataFormats/RPCRecHit/interface/RPCRecHit.h"
 #include "DataFormats/RPCRecHit/interface/RPCRecHitCollection.h"
 
+//Tag
+#include "DataFormats/BTauReco/interface/JetTag.h"
+
 //ROOT includes
 #include "TTree.h"
 #include "TFile.h"
@@ -231,7 +234,8 @@ public:
 
   //------ HELPER FUNCTIONS ------//
   bool passCaloJetID( const reco::CaloJet *jetCalo, int cutLevel);
-  bool passJetID( const reco::PFJet *jet, int cutLevel);
+  //bool passJetID( const reco::PFJet *jet, int cutLevel);
+  bool passJetID( const pat::Jet *jet, int cutLevel);
   double deltaPhi(double phi1, double phi2);
   double deltaR(double eta1, double phi1, double eta2, double phi2);
   void findTrackingVariables(const TLorentzVector &jetVec,const edm::EventSetup& iSetup,float &alphaMax,float &medianTheta2D,float &medianIP, int &nTracksPV,float &ptAllPVTracks,float &ptAllTracks,float &minDeltaRAllTracks, float &minDeltaRPVTracks);
@@ -317,7 +321,8 @@ protected:
   edm::EDGetTokenT<reco::PhotonCollection> photonsToken_;
   edm::EDGetTokenT<reco::CaloJetCollection> jetsCaloToken_;
   // edm::EDGetTokenT<reco::PFJetCollection> jetsPFToken_;
-  edm::EDGetTokenT<reco::PFJetCollection> jetsToken_;
+  //edm::EDGetTokenT<reco::PFJetCollection> jetsToken_;
+  edm::EDGetTokenT<pat::JetCollection> jetsToken_;
   edm::EDGetTokenT<reco::PFJetCollection> jetsPuppiToken_;
   edm::EDGetTokenT<reco::PFJetCollection> jetsAK8Token_;
   edm::EDGetTokenT<reco::PFCandidateCollection> PFCandsToken_;
@@ -393,7 +398,9 @@ protected:
   edm::Handle<reco::PFTauCollection> taus;
   edm::Handle<reco::CaloJetCollection> jetsCalo;
   // edm::Handle<reco::PFJetCollection> jetsPF;
-  edm::Handle<reco::PFJetCollection> jets;
+  //edm::Handle<reco::PFJetCollection> jets;
+  edm::Handle<pat::JetCollection> jets;
+  //edm::Handle<reco::JetTagCollection> bTagHandle;
   edm::Handle<reco::PFJetCollection> jetsPuppi;
   edm::Handle<reco::PFJetCollection> jetsAK8;
   edm::Handle<reco::GenMETCollection> genMetsCalo;
@@ -1068,7 +1075,7 @@ float pho_pfClusterSeedE[OBJECTARRAYSIZE];
  float gLLP_eta[LLP_ARRAY_SIZE];
  float gLLP_phi[LLP_ARRAY_SIZE];
 /*
- bool gLLP_daughter_EB[LLP_DAUGHTER_ARRAY_SIZE];
+ bool gLLP_daughter_EB[LLP_DAUGHTER_ARRAY_SIZE]; 
  bool gLLP_daughter_ETL[LLP_DAUGHTER_ARRAY_SIZE];
 
  float photon_travel_time[LLP_DAUGHTER_ARRAY_SIZE];
@@ -1094,7 +1101,7 @@ float pho_pfClusterSeedE[OBJECTARRAYSIZE];
  float gLLP_min_delta_r_match_calojet[LLP_DAUGHTER_ARRAY_SIZE];
 */
  //daughters
- bool gLLP_daughter_EB[LLP_DAUGHTER_ARRAY_SIZE];
+ bool gLLP_daughter_EB[LLP_DAUGHTER_ARRAY_SIZE]; 
  bool gLLP_daughter_ETL[LLP_DAUGHTER_ARRAY_SIZE];
 
  float gLLP_daughter_photon_travel_time_EB[LLP_DAUGHTER_ARRAY_SIZE];
@@ -1121,7 +1128,7 @@ float pho_pfClusterSeedE[OBJECTARRAYSIZE];
  float gLLP_daughter_min_delta_r_match_calojet[LLP_DAUGHTER_ARRAY_SIZE];
 
  //grandaughters
- bool gLLP_grandaughter_EB[LLP_GRAND_DAUGHTER_ARRAY_SIZE];
+ bool gLLP_grandaughter_EB[LLP_GRAND_DAUGHTER_ARRAY_SIZE]; 
  bool gLLP_grandaughter_ETL[LLP_GRAND_DAUGHTER_ARRAY_SIZE];
 
  float gLLP_grandaughter_photon_travel_time_EB[LLP_GRAND_DAUGHTER_ARRAY_SIZE];

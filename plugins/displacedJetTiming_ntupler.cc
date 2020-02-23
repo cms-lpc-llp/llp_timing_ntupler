@@ -36,7 +36,8 @@ displacedJetTiming_ntupler::displacedJetTiming_ntupler(const edm::ParameterSet& 
   photonsToken_(consumes<reco::PhotonCollection>(iConfig.getParameter<edm::InputTag>("photons"))),
   jetsCaloToken_(consumes<reco::CaloJetCollection>(iConfig.getParameter<edm::InputTag>("jetsCalo"))),
   // jetsPFToken_(consumes<reco::PFJetCollection>(iConfig.getParameter<edm::InputTag>("jetsPF"))),
-  jetsToken_(consumes<reco::PFJetCollection>(iConfig.getParameter<edm::InputTag>("jets"))),
+  jetsToken_(consumes<pat::JetCollection>(iConfig.getParameter<edm::InputTag>("jets"))),
+  //jetsToken_(consumes<reco::PFJetCollection>(iConfig.getParameter<edm::InputTag>("jets"))),
   jetsPuppiToken_(consumes<reco::PFJetCollection>(iConfig.getParameter<edm::InputTag>("jetsPuppi"))),
   jetsAK8Token_(consumes<reco::PFJetCollection>(iConfig.getParameter<edm::InputTag>("jetsAK8"))),
   PFCandsToken_(consumes<reco::PFCandidateCollection>(iConfig.getParameter<edm::InputTag>("pfCands"))),
@@ -943,6 +944,8 @@ void displacedJetTiming_ntupler::loadEvent(const edm::Event& iEvent)//load all m
 
     iEvent.getByToken(genInfoToken_,genInfo);
     iEvent.getByToken(puInfoToken_,puInfo);
+
+    //iEvent.getByLabel("trackCountingHighEffBJetTags", bTagHandle);
 
   }
 
@@ -2901,7 +2904,21 @@ bool displacedJetTiming_ntupler::fillPhotons(const edm::Event& iEvent, const edm
 bool displacedJetTiming_ntupler::fillJets(const edm::EventSetup& iSetup)
 {
 
-  for (const reco::PFJet &j : *jets)
+  //btag
+  //const reco::JetTagCollection &bTags = *(bTagHandle.product());
+  //cout << "NbTags: " << bTags.size() << "\n";
+  
+  //Loop over jets and study b tag info.
+  /*
+  for (int i = 0; i != bTags.size(); ++i) {
+     cout<<" Jet "<< i 
+           <<" has b tag discriminator = "<<bTags[i].second
+           << " and jet Pt = "<<bTags[i].first->pt()<<endl;
+  }
+  */
+
+  for (const pat::Jet &j : *jets)
+  //for (const reco::PFJet &j : *jets)
   {
     if (j.pt() < 20) continue;
     if (fabs(j.eta()) > 2.4) continue;
@@ -2917,7 +2934,6 @@ bool displacedJetTiming_ntupler::fillJets(const edm::EventSetup& iSetup)
 
     TLorentzVector thisJet;
     thisJet.SetPtEtaPhiE(jetPt[nJets], jetEta[nJets], jetPhi[nJets], jetE[nJets]);
-    //jetCISV = j.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
 
     jetJetArea[nJets] = j.jetArea();
     jetPileupE[nJets] = j.pileup();
@@ -2960,7 +2976,7 @@ bool displacedJetTiming_ntupler::fillJets(const edm::EventSetup& iSetup)
     int nTracksPV_wp(0);
     findTrackingVariablesWithoutPropagator(thisJet,iSetup,alphaMax_wp,medianTheta2D_wp,medianIP_wp,nTracksPV_wp,ptAllPVTracks_wp,ptAllTracks_wp, minDeltaRAllTracks_wp, minDeltaRPVTracks_wp);
 
-    //jetCISV = j.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
+    jetCISV[nJets] = j.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
     jetAlphaMax[nJets] = alphaMax;
     jetBetaMax[nJets] = alphaMax * ptAllTracks/(j.pt());
     jetGammaMax[nJets] = alphaMax * ptAllTracks/(j.energy());
@@ -3342,7 +3358,8 @@ bool displacedJetTiming_ntupler::passCaloJetID( const reco::CaloJet *jetCalo, in
 }//passJetID CaloJet
 
 
-bool displacedJetTiming_ntupler::passJetID( const reco::PFJet *jet, int cutLevel) {
+bool displacedJetTiming_ntupler::passJetID( const pat::Jet *jet, int cutLevel) {
+//bool displacedJetTiming_ntupler::passJetID( const reco::PFJet *jet, int cutLevel) {
   bool result = false;
 
   double NHF = jet->neutralHadronEnergyFraction();
@@ -4625,7 +4642,7 @@ bool displacedJetTiming_ntupler::fillTrigger(const edm::Event& iEvent)
 
   //fill trigger information
   const edm::TriggerNames &names = iEvent.triggerNames(*triggerBits);
-  // std::cout << "\n === TRIGGER PATHS === " << std::endl;
+  std::cout << "\n === TRIGGER PATHS === " << std::endl;
   //------------------------------------------------------------------
   //Option to save all HLT path names in the ntuple per event
   //Expensive option in terms of ntuple size
@@ -4636,7 +4653,7 @@ bool displacedJetTiming_ntupler::fillTrigger(const edm::Event& iEvent)
     string hltPathNameReq = "HLT_";
     //if (triggerBits->accept(i))
     if ((names.triggerName(i)).find(hltPathNameReq) != string::npos) nameHLT->push_back(names.triggerName(i));
-    /*
+   /* 
     std::cout << "Trigger " << names.triggerName(i) <<
     ", prescale " << triggerPrescales->getPrescaleForIndex(i) <<
     ": " << (triggerBits->accept(i) ? "PASS" : "fail (or not run)")
@@ -4646,14 +4663,14 @@ bool displacedJetTiming_ntupler::fillTrigger(const edm::Event& iEvent)
     << std::endl;
     */
   }
-  /*
+  
   std::cout << "n triggers: " <<  nameHLT->size() << std::endl;
   std::cout << "====================" << std::endl;
   for ( unsigned int i = 0; i < nameHLT->size(); i++ )
   {
     std::cout << i << " -> " << nameHLT->at(i) << std::endl;
   }
-  */
+  
   //------------------------------------------------------------------
   // Save trigger decisions in array of booleans
   //------------------------------------------------------------------
