@@ -4638,7 +4638,7 @@ bool displacedJetTiming_ntupler::fillTrigger(const edm::Event& iEvent)
 
   //fill trigger information
   const edm::TriggerNames &names = iEvent.triggerNames(*triggerBits);
-  std::cout << "\n === TRIGGER PATHS === " << std::endl;
+  //std::cout << "\n === TRIGGER PATHS === " << std::endl;
   //------------------------------------------------------------------
   //Option to save all HLT path names in the ntuple per event
   //Expensive option in terms of ntuple size
@@ -4660,13 +4660,14 @@ bool displacedJetTiming_ntupler::fillTrigger(const edm::Event& iEvent)
     */
   }
   
+/*
   std::cout << "n triggers: " <<  nameHLT->size() << std::endl;
   std::cout << "====================" << std::endl;
   for ( unsigned int i = 0; i < nameHLT->size(); i++ )
   {
     std::cout << i << " -> " << nameHLT->at(i) << std::endl;
   }
-  
+  */
   //------------------------------------------------------------------
   // Save trigger decisions in array of booleans
   //------------------------------------------------------------------
