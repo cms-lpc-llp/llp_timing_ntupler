@@ -82,6 +82,7 @@ using namespace std;
 #include "DataFormats/PatCandidates/interface/MET.h"
 #include "DataFormats/PatCandidates/interface/PackedCandidate.h"
 #include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
+#include "DataFormats/PatCandidates/interface/IsolatedTrack.h"
 #include "DataFormats/Candidate/interface/Candidate.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "FWCore/Common/interface/TriggerNames.h"
@@ -107,11 +108,13 @@ using namespace std;
 #include "DataFormats/ParticleFlowReco/interface/PFCluster.h"
 #include "DataFormats/ParticleFlowReco/interface/PFClusterFwd.h"
 #include "DataFormats/METReco/interface/PFMETCollection.h"
+#include "DataFormats/METReco/interface/METCollection.h"
 #include "DataFormats/TauReco/interface/PFTau.h"
 #include "DataFormats/JetReco/interface/CaloJet.h"
 #include "DataFormats/JetReco/interface/PFJet.h"
 #include "DataFormats/JetReco/interface/GenJet.h"
 #include "DataFormats/JetReco/interface/BasicJetCollection.h"
+#include "DataFormats/JetReco/interface/JetCollection.h"
 #include "SimDataFormats/GeneratorProducts/interface/HepMCProduct.h"
 
 #include "DataFormats/DetId/interface/DetId.h"
@@ -157,9 +160,9 @@ using namespace std;
 #include "TLorentzVector.h"
 
 //LOCAL includes
-#include "cms_lpc_llp/llp_ntupler/interface/EGammaMvaEleEstimatorCSA14.h"
-#include "cms_lpc_llp/llp_ntupler/interface/ElectronMVAEstimatorRun2NonTrig.h"
-#include "cms_lpc_llp/llp_ntupler/interface/EGammaMvaPhotonEstimator.h"
+#include "cms_lpc_llp/llp_timing_ntupler/interface/EGammaMvaEleEstimatorCSA14.h"
+#include "cms_lpc_llp/llp_timing_ntupler/interface/ElectronMVAEstimatorRun2NonTrig.h"
+#include "cms_lpc_llp/llp_timing_ntupler/interface/EGammaMvaPhotonEstimator.h"
 //#include "cms_lpc_llp/llp_ntupler/interface/RazorPDFWeightsHelper.h"
 
 //------ Array Size Constants ------//
@@ -233,13 +236,14 @@ public:
   void resetTriggerBranches();
 
   //------ HELPER FUNCTIONS ------//
-  bool passCaloJetID( const reco::CaloJet *jetCalo, int cutLevel);
+  //bool passCaloJetID( const reco::CaloJet *jetCalo, int cutLevel);
+  bool passCaloJetID( const pat::Jet *jetCalo, int cutLevel);
   //bool passJetID( const reco::PFJet *jet, int cutLevel);
   bool passJetID( const pat::Jet *jet, int cutLevel);
   double deltaPhi(double phi1, double phi2);
   double deltaR(double eta1, double phi1, double eta2, double phi2);
   void findTrackingVariables(const TLorentzVector &jetVec,const edm::EventSetup& iSetup,float &alphaMax,float &medianTheta2D,float &medianIP, int &nTracksPV,float &ptAllPVTracks,float &ptAllTracks,float &minDeltaRAllTracks, float &minDeltaRPVTracks);
-  void findTrackingVariablesWithoutPropagator(const TLorentzVector &jetVec,const edm::EventSetup& iSetup,float &alphaMax,float &medianTheta2D,float &medianIP, int &nTracksPV,float &ptAllPVTracks,float &ptAllTracks,float &minDeltaRAllTracks, float &minDeltaRPVTracks);
+  //void findTrackingVariablesWithoutPropagator(const TLorentzVector &jetVec,const edm::EventSetup& iSetup,float &alphaMax,float &medianTheta2D,float &medianIP, int &nTracksPV,float &ptAllPVTracks,float &ptAllTracks,float &minDeltaRAllTracks, float &minDeltaRPVTracks);
   void jet_second_moments(std::vector<double> &et,std::vector<double> &eta,std::vector<double> &phi,double &sig1,double &sig2);
 
   //bool fill_fat_jet(const edm::EventSetup& iSetup);
@@ -303,28 +307,24 @@ protected:
 
   //EDM tokens for each miniAOD input object
   edm::EDGetTokenT<reco::VertexCollection> verticesToken_;
-  //edm::InputTag tracksTag_;
-  //edm::InputTag trackTimeTag_;
-  //edm::InputTag trackTimeResoTag_;
-  edm::EDGetTokenT<edm::View<reco::Track> > tracksTag_;
-  edm::EDGetTokenT<edm::ValueMap<float> > trackTimeTag_;
-  edm::EDGetTokenT<edm::ValueMap<float>> trackTimeResoTag_;
+  edm::EDGetTokenT<edm::View<pat::IsolatedTrackCollection> > tracksTag_;
 
 
   edm::EDGetTokenT<CSCSegmentCollection> cscSegmentInputToken_;
   edm::EDGetTokenT<DTRecSegment4DCollection> dtSegmentInputToken_;
   edm::EDGetTokenT<RPCRecHitCollection> rpcRecHitInputToken_;
 
-  edm::EDGetTokenT<reco::MuonCollection> muonsToken_;
-  edm::EDGetTokenT<reco::GsfElectronCollection> electronsToken_;
-  edm::EDGetTokenT<reco::PFTauCollection> tausToken_;
-  edm::EDGetTokenT<reco::PhotonCollection> photonsToken_;
-  edm::EDGetTokenT<reco::CaloJetCollection> jetsCaloToken_;
+  edm::EDGetTokenT<pat::MuonCollection> muonsToken_;
+  edm::EDGetTokenT<pat::ElectronCollection> electronsToken_;
+  edm::EDGetTokenT<pat::TauCollection> tausToken_;
+  edm::EDGetTokenT<pat::PhotonCollection> photonsToken_;
+  //edm::EDGetTokenT<reco::CaloJetCollection> jetsCaloToken_;
+  edm::EDGetTokenT<pat::JetCollection> jetsCaloToken_;
   // edm::EDGetTokenT<reco::PFJetCollection> jetsPFToken_;
   //edm::EDGetTokenT<reco::PFJetCollection> jetsToken_;
   edm::EDGetTokenT<pat::JetCollection> jetsToken_;
-  edm::EDGetTokenT<reco::PFJetCollection> jetsPuppiToken_;
-  edm::EDGetTokenT<reco::PFJetCollection> jetsAK8Token_;
+  edm::EDGetTokenT<pat::JetCollection> jetsPuppiToken_;
+  edm::EDGetTokenT<pat::JetCollection> jetsAK8Token_;
   edm::EDGetTokenT<reco::PFCandidateCollection> PFCandsToken_;
   edm::EDGetTokenT<reco::PFClusterCollection> PFClustersToken_;
 //  edm::EDGetTokenT<edm::View<reco::GenParticle> > prunedGenParticlesToken_;
@@ -336,9 +336,9 @@ protected:
   edm::EDGetTokenT<pat::PackedTriggerPrescales> triggerPrescalesToken_;
   edm::EDGetTokenT<reco::GenMETCollection> genMetCaloToken_;
   edm::EDGetTokenT<reco::GenMETCollection> genMetTrueToken_;
-  edm::EDGetTokenT<reco::PFMETCollection> metToken_;
+  edm::EDGetTokenT<pat::METCollection> metToken_;
   edm::EDGetTokenT<reco::PFMETCollection> metNoHFToken_;
-  edm::EDGetTokenT<reco::PFMETCollection> metPuppiToken_;
+  edm::EDGetTokenT<pat::METCollection> metPuppiToken_;
   edm::EDGetTokenT<edm::TriggerResults> metFilterBitsToken_;
   //edm::EDGetTokenT<bool> hbheNoiseFilterToken_;
   //edm::EDGetTokenT<bool> hbheTightNoiseFilterToken_;
@@ -369,7 +369,7 @@ protected:
   edm::EDGetTokenT<vector<reco::Conversion> > singleLegConversionsToken_;
   edm::EDGetTokenT<vector<reco::GsfElectronCore> > gedGsfElectronCoresToken_;
   edm::EDGetTokenT<vector<reco::PhotonCore> > gedPhotonCoresToken_;
-  edm::EDGetTokenT<vector<reco::Track> > generalTrackToken_;
+  edm::EDGetTokenT<vector<pat::IsolatedTrack> > generalTrackToken_;
   //  edm::EDGetTokenT<vector<reco::SuperCluster> > superClustersToken_;
   //  edm::EDGetTokenT<vector<reco::PFCandidate> > lostTracksToken_;
   edm::EDGetTokenT<float> genParticles_t0_Token_;
@@ -387,28 +387,29 @@ protected:
   edm::Handle<pat::PackedTriggerPrescales> triggerPrescales;
   edm::Handle<edm::TriggerResults> metFilterBits;
   edm::Handle<reco::VertexCollection> vertices;
-  edm::Handle<edm::View<reco::Track> > tracks;
+  edm::Handle<edm::View<pat::IsolatedTrackCollection> > tracks;
   edm::Handle<edm::ValueMap<float> > times;
   edm::Handle<edm::ValueMap<float> > timeResos;
   edm::Handle<reco::PFCandidateCollection> pfCands;
   edm::Handle<reco::PFClusterCollection> pfClusters;
-  edm::Handle<reco::MuonCollection> muons;
-  edm::Handle<reco::GsfElectronCollection> electrons;
-  edm::Handle<reco::PhotonCollection> photons;
-  edm::Handle<reco::PFTauCollection> taus;
-  edm::Handle<reco::CaloJetCollection> jetsCalo;
+  edm::Handle<pat::MuonCollection> muons;
+  edm::Handle<pat::ElectronCollection> electrons;
+  edm::Handle<pat::PhotonCollection> photons;
+  edm::Handle<pat::TauCollection> taus;
+  //edm::Handle<reco::CaloJetCollection> jetsCalo;
+  edm::Handle<pat::JetCollection> jetsCalo;
   // edm::Handle<reco::PFJetCollection> jetsPF;
   //edm::Handle<reco::PFJetCollection> jets;
   edm::Handle<pat::JetCollection> jets;
   //edm::Handle<reco::JetTagCollection> bTagHandle;
-  edm::Handle<reco::PFJetCollection> jetsPuppi;
-  edm::Handle<reco::PFJetCollection> jetsAK8;
+  edm::Handle<pat::JetCollection> jetsPuppi;
+  edm::Handle<pat::JetCollection> jetsAK8;
   edm::Handle<reco::GenMETCollection> genMetsCalo;
   edm::Handle<reco::GenMETCollection> genMetsTrue;
   //edm::Handle<reco::GenMETCollection> mets;
-  edm::Handle<reco::PFMETCollection> mets;
+  edm::Handle<pat::METCollection> mets;
 //  edm::Handle<reco::PFMETCollection> metsNoHF;
-  edm::Handle<reco::PFMETCollection> metsPuppi;
+  edm::Handle<pat::METCollection> metsPuppi;
 //  edm::Handle<edm::View<reco::GenParticle> > prunedGenParticles;
   edm::Handle<reco::GenParticleCollection> genParticles;
   edm::Handle<reco::GenJetCollection> genJets;
@@ -439,7 +440,7 @@ protected:
   edm::Handle<vector<reco::Conversion>> singleLegConversions;
   edm::Handle<vector<reco::GsfElectronCore> > gedGsfElectronCores;
   edm::Handle<vector<reco::PhotonCore> > gedPhotonCores;
-  edm::Handle<std::vector<reco::Track>> generalTracks;
+  edm::Handle<std::vector<pat::IsolatedTrack>> generalTracks;
   //  edm::Handle<vector<reco::SuperCluster> > superClusters;
   //  edm::Handle<vector<reco::PFCandidate> > lostTracks;
   edm::Handle<float> genParticles_t0;

@@ -21,53 +21,45 @@ displacedJetTiming_ntupler::displacedJetTiming_ntupler(const edm::ParameterSet& 
   enableEcalRechits_(iConfig.getParameter<bool> ("enableEcalRechits")),
   readGenVertexTime_(iConfig.getParameter<bool> ("readGenVertexTime")),
   llpId_(iConfig.getParameter<int> ("llpId")),
+
   triggerPathNamesFile_(iConfig.getParameter<string> ("triggerPathNamesFile")),
   eleHLTFilterNamesFile_(iConfig.getParameter<string> ("eleHLTFilterNamesFile")),
   muonHLTFilterNamesFile_(iConfig.getParameter<string> ("muonHLTFilterNamesFile")),
   photonHLTFilterNamesFile_(iConfig.getParameter<string> ("photonHLTFilterNamesFile")),
+
   verticesToken_(consumes<reco::VertexCollection>(iConfig.getParameter<edm::InputTag>("vertices"))),
-  tracksTag_(consumes<edm::View<reco::Track> >(iConfig.getParameter<edm::InputTag>("tracks"))),
-  cscSegmentInputToken_(consumes<CSCSegmentCollection>(edm::InputTag("cscSegments"))),
-  dtSegmentInputToken_(consumes<DTRecSegment4DCollection>(edm::InputTag("dt4DCosmicSegments"))),
-  rpcRecHitInputToken_(consumes<RPCRecHitCollection>(edm::InputTag("rpcRecHits"))),
-  muonsToken_(consumes<reco::MuonCollection>(iConfig.getParameter<edm::InputTag>("muons"))),
-  electronsToken_(consumes<reco::GsfElectronCollection>(iConfig.getParameter<edm::InputTag>("electrons"))),
-  tausToken_(consumes<reco::PFTauCollection>(iConfig.getParameter<edm::InputTag>("taus"))),
-  photonsToken_(consumes<reco::PhotonCollection>(iConfig.getParameter<edm::InputTag>("photons"))),
-  jetsCaloToken_(consumes<reco::CaloJetCollection>(iConfig.getParameter<edm::InputTag>("jetsCalo"))),
+  tracksTag_(consumes<edm::View<pat::IsolatedTrackCollection> >(iConfig.getParameter<edm::InputTag>("tracks"))),
+  //cscSegmentInputToken_(consumes<CSCSegmentCollection>(edm::InputTag("cscSegments"))),
+  //dtSegmentInputToken_(consumes<DTRecSegment4DCollection>(edm::InputTag("dt4DCosmicSegments"))),
+  //rpcRecHitInputToken_(consumes<RPCRecHitCollection>(edm::InputTag("rpcRecHits"))),
+  muonsToken_(consumes<pat::MuonCollection>(iConfig.getParameter<edm::InputTag>("muons"))),
+  electronsToken_(consumes<pat::ElectronCollection>(iConfig.getParameter<edm::InputTag>("electrons"))),
+  tausToken_(consumes<pat::TauCollection>(iConfig.getParameter<edm::InputTag>("taus"))),
+  photonsToken_(consumes<pat::PhotonCollection>(iConfig.getParameter<edm::InputTag>("photons"))),
+  jetsCaloToken_(consumes<pat::JetCollection>(iConfig.getParameter<edm::InputTag>("jetsCalo"))),
   // jetsPFToken_(consumes<reco::PFJetCollection>(iConfig.getParameter<edm::InputTag>("jetsPF"))),
   jetsToken_(consumes<pat::JetCollection>(iConfig.getParameter<edm::InputTag>("jets"))),
   //jetsToken_(consumes<reco::PFJetCollection>(iConfig.getParameter<edm::InputTag>("jets"))),
-  jetsPuppiToken_(consumes<reco::PFJetCollection>(iConfig.getParameter<edm::InputTag>("jetsPuppi"))),
-  jetsAK8Token_(consumes<reco::PFJetCollection>(iConfig.getParameter<edm::InputTag>("jetsAK8"))),
-  PFCandsToken_(consumes<reco::PFCandidateCollection>(iConfig.getParameter<edm::InputTag>("pfCands"))),
-  PFClustersToken_(consumes<reco::PFClusterCollection>(iConfig.getParameter<edm::InputTag>("pfClusters"))),
+  jetsPuppiToken_(consumes<pat::JetCollection>(iConfig.getParameter<edm::InputTag>("jetsPuppi"))),
+  jetsAK8Token_(consumes<pat::JetCollection>(iConfig.getParameter<edm::InputTag>("jetsAK8"))),
+  //PFCandsToken_(consumes<reco::PFCandidateCollection>(iConfig.getParameter<edm::InputTag>("pfCands"))),
+  //PFClustersToken_(consumes<reco::PFClusterCollection>(iConfig.getParameter<edm::InputTag>("pfClusters"))),
   //genParticlesToken_(consumes<edm::View<reco::GenParticle> >(iConfig.getParameter<edm::InputTag>("genParticles"))),
   //genParticlesToken_(consumes<edm::View<pat::PackedGenParticle> >(iConfig.getParameter<edm::InputTag>("genParticles"))),
-  genParticlesToken_(consumes<reco::GenParticleCollection>(iConfig.getParameter<edm::InputTag>("genParticles"))),
+  //genParticlesToken_(consumes<reco::GenParticleCollection>(iConfig.getParameter<edm::InputTag>("genParticles"))),
   genJetsToken_(consumes<reco::GenJetCollection>(iConfig.getParameter<edm::InputTag>("genJets"))),
   triggerBitsToken_(consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("triggerBits"))),
-  hepMCToken_(consumes<edm::HepMCProduct>(iConfig.getParameter<edm::InputTag>("hepMC"))),
+  //hepMCToken_(consumes<edm::HepMCProduct>(iConfig.getParameter<edm::InputTag>("hepMC"))),
   //triggerObjectsToken_(consumes<pat::TriggerObjectStandAloneCollection>(iConfig.getParameter<edm::InputTag>("triggerObjects"))),
   //triggerPrescalesToken_(consumes<pat::PackedTriggerPrescales>(iConfig.getParameter<edm::InputTag>("triggerPrescales"))),
-  genMetCaloToken_(consumes<reco::GenMETCollection>(iConfig.getParameter<edm::InputTag>("genMetsCalo"))),
-  genMetTrueToken_(consumes<reco::GenMETCollection>(iConfig.getParameter<edm::InputTag>("genMetsTrue"))),
-  metToken_(consumes<reco::PFMETCollection>(iConfig.getParameter<edm::InputTag>("mets"))),
-//  metNoHFToken_(consumes<reco::PFMETCollection>(iConfig.getParameter<edm::InputTag>("metsNoHF"))),
-  metPuppiToken_(consumes<reco::PFMETCollection>(iConfig.getParameter<edm::InputTag>("metsPuppi"))),
+  //genMetCaloToken_(consumes<reco::GenMETCollection>(iConfig.getParameter<edm::InputTag>("genMetsCalo"))),
+  //genMetTrueToken_(consumes<reco::GenMETCollection>(iConfig.getParameter<edm::InputTag>("genMetsTrue"))),
+  metToken_(consumes<pat::METCollection>(iConfig.getParameter<edm::InputTag>("mets"))),
+  metPuppiToken_(consumes<pat::METCollection>(iConfig.getParameter<edm::InputTag>("metsPuppi"))),
   metFilterBitsToken_(consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("metFilterBits"))),
-  //hbheNoiseFilterToken_(consumes<bool>(iConfig.getParameter<edm::InputTag>("hbheNoiseFilter"))),
-  //hbheTightNoiseFilterToken_(consumes<bool>(iConfig.getParameter<edm::InputTag>("hbheTightNoiseFilter"))),
-  //hbheIsoNoiseFilterToken_(consumes<bool>(iConfig.getParameter<edm::InputTag>("hbheIsoNoiseFilter"))),
-  //badChargedCandidateFilterToken_(consumes<bool>(iConfig.getParameter<edm::InputTag>("BadChargedCandidateFilter"))),
-  //badMuonFilterToken_(consumes<bool>(iConfig.getParameter<edm::InputTag>("BadMuonFilter"))),
-//  lheRunInfoTag_(iConfig.getParameter<edm::InputTag>("lheInfo")),
-//  lheRunInfoToken_(consumes<LHERunInfoProduct,edm::InRun>(lheRunInfoTag_)),
-//  lheInfoToken_(consumes<LHEEventProduct>(iConfig.getParameter<edm::InputTag>("lheInfo"))),
   genInfoToken_(consumes<GenEventInfoProduct>(iConfig.getParameter<edm::InputTag>("genInfo"))),
   genLumiHeaderToken_(consumes<GenLumiInfoHeader,edm::InLumi>(edm::InputTag("generator",""))),
   puInfoToken_(consumes<std::vector<PileupSummaryInfo> >(iConfig.getParameter<edm::InputTag>("puInfo"))),
-  //hcalNoiseInfoToken_(consumes<HcalNoiseSummary>(iConfig.getParameter<edm::InputTag>("hcalNoiseInfo"))),
   secondaryVerticesToken_(consumes<vector<reco::VertexCompositePtrCandidate> >(iConfig.getParameter<edm::InputTag>("secondaryVertices"))),
   rhoAllToken_(consumes<double>(iConfig.getParameter<edm::InputTag>("rhoAll"))),
   rhoFastjetAllToken_(consumes<double>(iConfig.getParameter<edm::InputTag>("rhoFastjetAll"))),
@@ -84,14 +76,8 @@ displacedJetTiming_ntupler::displacedJetTiming_ntupler(const edm::ParameterSet& 
   conversionsToken_(consumes<vector<reco::Conversion> >(iConfig.getParameter<edm::InputTag>("conversions"))),
   singleLegConversionsToken_(consumes<vector<reco::Conversion> >(iConfig.getParameter<edm::InputTag>("singleLegConversions"))),
   gedGsfElectronCoresToken_(consumes<vector<reco::GsfElectronCore> >(iConfig.getParameter<edm::InputTag>("gedGsfElectronCores"))),
-  gedPhotonCoresToken_(consumes<vector<reco::PhotonCore> >(iConfig.getParameter<edm::InputTag>("gedPhotonCores"))),
-  generalTrackToken_(consumes<std::vector<reco::Track>>(edm::InputTag("generalTracks")))
-  //superClustersToken_(consumes<vector<reco::SuperCluster> >(iConfig.getParameter<edm::InputTag>("superClusters"))),
-  //  lostTracksToken_(consumes<vector<reco::PFCandidate> >(iConfig.getParameter<edm::InputTag>("lostTracks")))
-  // mvaGeneralPurposeValuesMapToken_(consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("mvaGeneralPurposeValuesMap"))),
-  // mvaGeneralPurposeCategoriesMapToken_(consumes<edm::ValueMap<int> >(iConfig.getParameter<edm::InputTag>("mvaGeneralPurposeCategoriesMap"))),
-  // mvaHZZValuesMapToken_(consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("mvaHZZValuesMap"))),
-  // mvaHZZCategoriesMapToken_(consumes<edm::ValueMap<int> >(iConfig.getParameter<edm::InputTag>("mvaHZZCategoriesMap")))
+  gedPhotonCoresToken_(consumes<vector<reco::PhotonCore> >(iConfig.getParameter<edm::InputTag>("gedPhotonCores")))
+  //generalTrackToken_(consumes<std::vector<pat::IsolatedTrackCollection>>(edm::InputTag("generalTracks")))
 {
   //declare the TFileService for output
   edm::Service<TFileService> fs;
@@ -883,16 +869,16 @@ void displacedJetTiming_ntupler::enableGenParticleBranches()
 void displacedJetTiming_ntupler::loadEvent(const edm::Event& iEvent)//load all miniAOD objects for the current event
 {
   iEvent.getByToken(triggerBitsToken_, triggerBits);
-  iEvent.getByToken(hepMCToken_, hepMC);
+  //iEvent.getByToken(hepMCToken_, hepMC);
   iEvent.getByToken(triggerBitsToken_, triggerBits);
   iEvent.getByToken(metFilterBitsToken_, metFilterBits);
   iEvent.getByToken(verticesToken_, vertices);
-  iEvent.getByToken(cscSegmentInputToken_,cscSegments);
-  iEvent.getByToken(dtSegmentInputToken_,dtSegments);
-  iEvent.getByToken(rpcRecHitInputToken_,rpcRecHits);
+  //iEvent.getByToken(cscSegmentInputToken_,cscSegments);
+  //iEvent.getByToken(dtSegmentInputToken_,dtSegments);
+  //iEvent.getByToken(rpcRecHitInputToken_,rpcRecHits);
   iEvent.getByToken(tracksTag_,tracks);
-  iEvent.getByToken(PFCandsToken_, pfCands);
-  iEvent.getByToken(PFClustersToken_, pfClusters);
+  //iEvent.getByToken(PFCandsToken_, pfCands);
+  //iEvent.getByToken(PFClustersToken_, pfClusters);
   iEvent.getByToken(muonsToken_, muons);
   iEvent.getByToken(electronsToken_, electrons);
   iEvent.getByToken(photonsToken_, photons);
@@ -902,8 +888,8 @@ void displacedJetTiming_ntupler::loadEvent(const edm::Event& iEvent)//load all m
   iEvent.getByToken(jetsToken_, jets);
   iEvent.getByToken(jetsPuppiToken_, jetsPuppi);
   iEvent.getByToken(jetsAK8Token_, jetsAK8);
-  iEvent.getByToken(genMetCaloToken_, genMetsCalo);
-  iEvent.getByToken(genMetTrueToken_, genMetsTrue);
+  //iEvent.getByToken(genMetCaloToken_, genMetsCalo);
+  //iEvent.getByToken(genMetTrueToken_, genMetsTrue);
   iEvent.getByToken(metToken_, mets);
   //iEvent.getByToken(metNoHFToken_, metsNoHF);
   iEvent.getByToken(metPuppiToken_, metsPuppi);
@@ -925,7 +911,7 @@ void displacedJetTiming_ntupler::loadEvent(const edm::Event& iEvent)//load all m
   iEvent.getByToken(singleLegConversionsToken_,singleLegConversions);
   iEvent.getByToken(gedGsfElectronCoresToken_,gedGsfElectronCores);
   iEvent.getByToken(gedPhotonCoresToken_, gedPhotonCores);
-  iEvent.getByToken(generalTrackToken_,generalTracks);
+  //iEvent.getByToken(generalTrackToken_,generalTracks);
 //  iEvent.getByToken(superClustersToken_,superClusters);
 //  iEvent.getByToken(lostTracksToken_,lostTracks);
 //  iEvent.getByToken(hbheNoiseFilterToken_, hbheNoiseFilter);
@@ -936,7 +922,7 @@ void displacedJetTiming_ntupler::loadEvent(const edm::Event& iEvent)//load all m
   if(readGenVertexTime_) iEvent.getByToken(genParticles_t0_Token_,genParticles_t0);
   if (useGen_) {
 //    iEvent.getByToken(genParticlesToken_,genParticles);
-    iEvent.getByToken(genParticlesToken_,genParticles);
+    //iEvent.getByToken(genParticlesToken_,genParticles);
     iEvent.getByToken(genJetsToken_,genJets);
 
     //for Spring16 fastsim, this has been changed and removed
@@ -1735,18 +1721,18 @@ void displacedJetTiming_ntupler::analyze(const edm::Event& iEvent, const edm::Ev
   //fillTracks(iSetup);
   //fillTracksPV(iSetup);
   fillMuons(iEvent);
-  fillMuonSystem(iEvent, iSetup);
+  //fillMuonSystem(iEvent, iSetup);
   fillElectrons(iEvent);
-  // fillPhotons(iEvent, iSetup);
+   //fillPhotons(iEvent, iSetup);
   // fillTaus();
   fillJets(iSetup);
   fillMet(iEvent);
   if ( enableTriggerInfo_ ) fillTrigger( iEvent );
-  if ( enableCaloJet_ ) fillCaloJets( iSetup );
+  //if ( enableCaloJet_ ) fillCaloJets( iSetup );
   if (!isData) {
     fillPileUp();
-    fillMC();
-    fillGenParticles();
+    //fillMC();
+    //fillGenParticles();
   }
 
   llpTree->Fill();
@@ -1863,7 +1849,7 @@ bool displacedJetTiming_ntupler::fillPVAll()
 
   return true;
 };
-
+/*
 bool displacedJetTiming_ntupler::fillPVTracks()
 {
   //
@@ -1983,7 +1969,7 @@ bool displacedJetTiming_ntupler::fillTracksPV(const edm::EventSetup& iSetup)
 
   return true;
 };
-
+*/
 bool displacedJetTiming_ntupler::fillPileUp()
 {
   for(const PileupSummaryInfo &pu : *puInfo)
@@ -2216,6 +2202,9 @@ bool displacedJetTiming_ntupler::fillElectrons(const edm::Event& iEvent)
 
 
   for(const pat::Electron &ele : *electrons) {
+  //for (size_t i = 0; i < electrons->size(); ++i){
+    //const auto ele = electrons->ptrAt(i);
+
     if(ele.pt() < 5) continue;
     eleE[nElectrons] = ele.energy();
     elePt[nElectrons] = ele.pt();
@@ -2337,7 +2326,8 @@ bool displacedJetTiming_ntupler::fillElectrons(const edm::Event& iEvent)
 };
 
 bool displacedJetTiming_ntupler::fillTaus(){
-  for (const reco::PFTau &tau : *taus) {
+  for (const pat::Tau &tau : *taus) {
+  //for (const reco::PFTau &tau : *taus) {
     if (tau.pt() < 20) continue;
     tauE[nTaus] = tau.energy();
     tauPt[nTaus] = tau.pt();
@@ -2970,11 +2960,11 @@ bool displacedJetTiming_ntupler::fillJets(const edm::EventSetup& iSetup)
     float alphaMax(0.0),medianTheta2D(0.0),medianIP(0.0),minDeltaRAllTracks(0.0),minDeltaRPVTracks(0.0),ptAllTracks(0.0), ptAllPVTracks(0.0);
     int nTracksPV(0);
 
-    findTrackingVariables(thisJet,iSetup,alphaMax,medianTheta2D,medianIP,nTracksPV,ptAllPVTracks,ptAllTracks, minDeltaRAllTracks, minDeltaRPVTracks);
+    //findTrackingVariables(thisJet,iSetup,alphaMax,medianTheta2D,medianIP,nTracksPV,ptAllPVTracks,ptAllTracks, minDeltaRAllTracks, minDeltaRPVTracks);
 
     float alphaMax_wp(0.0),medianTheta2D_wp(0.0),medianIP_wp(0.0),minDeltaRAllTracks_wp(0.0),minDeltaRPVTracks_wp(0.0),ptAllTracks_wp(0.0), ptAllPVTracks_wp(0.0);
     int nTracksPV_wp(0);
-    findTrackingVariablesWithoutPropagator(thisJet,iSetup,alphaMax_wp,medianTheta2D_wp,medianIP_wp,nTracksPV_wp,ptAllPVTracks_wp,ptAllTracks_wp, minDeltaRAllTracks_wp, minDeltaRPVTracks_wp);
+    //findTrackingVariablesWithoutPropagator(thisJet,iSetup,alphaMax_wp,medianTheta2D_wp,medianIP_wp,nTracksPV_wp,ptAllPVTracks_wp,ptAllTracks_wp, minDeltaRAllTracks_wp, minDeltaRPVTracks_wp);
 
     jetCISV[nJets] = j.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
     jetAlphaMax[nJets] = alphaMax;
@@ -3127,7 +3117,8 @@ bool displacedJetTiming_ntupler::fillJets(const edm::EventSetup& iSetup)
 
 bool displacedJetTiming_ntupler::fillCaloJets(const edm::EventSetup& iSetup)
 {
-  for (const reco::CaloJet &j : *jetsCalo)
+  for (const pat::Jet &j : *jetsCalo)
+  //for (const reco::CaloJet &j : *jetsCalo)
   {
     if (j.pt() < 20) continue;
     if (fabs(j.eta()) > 2.4) continue;
@@ -3148,7 +3139,7 @@ bool displacedJetTiming_ntupler::fillCaloJets(const edm::EventSetup& iSetup)
     //calojetCISV = j.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
     float alphaMax(0.0),medianTheta2D(0.0),medianIP(0.0),minDeltaRAllTracks(0.0),minDeltaRPVTracks(0.0),ptAllTracks(0.0), ptAllPVTracks(0.0);
     int nTracksPV(0);
-    findTrackingVariables(thisJet,iSetup,alphaMax,medianTheta2D,medianIP,nTracksPV,ptAllPVTracks,ptAllTracks, minDeltaRAllTracks, minDeltaRPVTracks);
+    //findTrackingVariables(thisJet,iSetup,alphaMax,medianTheta2D,medianIP,nTracksPV,ptAllPVTracks,ptAllTracks, minDeltaRAllTracks, minDeltaRPVTracks);
     //jetCISV = j.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
     calojetAlphaMax[nCaloJets] = alphaMax;
     calojetBetaMax[nCaloJets] = alphaMax * ptAllTracks/j.pt();
@@ -3226,7 +3217,8 @@ bool displacedJetTiming_ntupler::fillCaloJets(const edm::EventSetup& iSetup)
 
 bool displacedJetTiming_ntupler::fillMet(const edm::Event& iEvent)
 {
-  const reco::PFMET &Met = mets->front();
+  const pat::MET &Met = mets->front();
+  //const reco::PFMET &Met = mets->front();
 
   //metPt = Met.uncorPt();
   //metPhi = Met.uncorPhi();
@@ -3288,7 +3280,8 @@ bool displacedJetTiming_ntupler::fillMet(const edm::Event& iEvent)
     }
  */
 
-  const reco::PFMET &MetPuppi = metsPuppi->front();
+  const pat::MET &MetPuppi = metsPuppi->front();
+  //const reco::PFMET &MetPuppi = metsPuppi->front();
   //const reco::PFMET &MetNoHF = metsNoHF->front();
   metPuppiPt = MetPuppi.pt();
   metPuppiPhi = MetPuppi.phi();
@@ -3351,7 +3344,8 @@ bool displacedJetTiming_ntupler::fillMet(const edm::Event& iEvent)
   return true;
 };
 
-bool displacedJetTiming_ntupler::passCaloJetID( const reco::CaloJet *jetCalo, int cutLevel) {
+//bool displacedJetTiming_ntupler::passCaloJetID( const reco::CaloJet *jetCalo, int cutLevel) {
+bool displacedJetTiming_ntupler::passCaloJetID( const pat::Jet *jetCalo, int cutLevel) {
   bool result = false;
 
   return result;
@@ -3430,6 +3424,7 @@ double displacedJetTiming_ntupler::deltaR(double eta1, double phi1, double eta2,
   double deta = eta1 - eta2;
   return sqrt( dphi*dphi + deta*deta);
 };
+/*
 void displacedJetTiming_ntupler::findTrackingVariablesWithoutPropagator(const TLorentzVector &jetVec,const edm::EventSetup& iSetup,float &alphaMax,float &medianTheta2D,float &medianIP, int &nTracksPV,float &ptAllPVTracks,float &ptAllTracks,float &minDeltaRAllTracks, float &minDeltaRPVTracks)
 {
   int nTracksAll = 0;
@@ -3603,7 +3598,7 @@ void displacedJetTiming_ntupler::findTrackingVariables(const TLorentzVector &jet
       alphaMax = ptPVTracksMax/ptAllTracks;
   	}
   }
-/*
+*
   for (int iTrack = 0; iTrack < nTracks; iTrack ++){
   	TLorentzVector generalTrackVecTemp;
   	generalTrackVecTemp.SetPtEtaPhiM(TrackPt[iTrack], TrackEta[iTrack], TrackPhi[iTrack], 0);
@@ -3647,7 +3642,7 @@ void displacedJetTiming_ntupler::findTrackingVariables(const TLorentzVector &jet
       alphaMax = ptPVTracksMax/ptAllTracks;
     }
   }
-*/
+*
   std::sort(IP2Ds.begin(),IP2Ds.end());
   if (IP2Ds.size() > 0){
 	   medianIP = IP2Ds[IP2Ds.size()/2];
@@ -3657,6 +3652,7 @@ void displacedJetTiming_ntupler::findTrackingVariables(const TLorentzVector &jet
     medianTheta2D = theta2Ds[theta2Ds.size()/2];
   }
 };
+*/
 void displacedJetTiming_ntupler::jet_second_moments(std::vector<double> &et,std::vector<double> &eta,std::vector<double> &phi,double &sig1,double &sig2)
 {
   double mean_eta = 0.0;
@@ -3696,7 +3692,7 @@ bool displacedJetTiming_ntupler::fillMC()
     genJetMET[nGenJets] = j.invisibleEnergy();
     nGenJets++;
   }
-
+/*
   const reco::GenMET &GenMetCalo = genMetsCalo->front();
   genMetPtCalo  = GenMetCalo.pt();
   genMetPhiCalo = GenMetCalo.phi();
@@ -3704,7 +3700,7 @@ bool displacedJetTiming_ntupler::fillMC()
   const reco::GenMET &GenMetTrue = genMetsTrue->front();
   genMetPtTrue  = GenMetTrue.pt();
   genMetPhiTrue = GenMetTrue.phi();
-
+*/
   bool foundGenVertex = false;
   for(size_t i=0; i<genParticles->size();i++)
   {
