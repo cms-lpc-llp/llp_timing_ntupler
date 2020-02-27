@@ -13,7 +13,7 @@ process.load("Configuration.EventContent.EventContent_cff")
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
 #'file:/mnt/hadoop/store/group/phys_exotica/jmao/aodsim/RunIISummer16/AODSIM/MSSM-2d-prod/x1n2-n1-wlv-hbb_mh200_pl100_ev100000/crab_CMSSW_9_4_12_x1n2-n1-wlv-hbb_mchi200__mlsp150_pl100_ev100000_AODSIM_CaltechT2/191007_025612/0000/SUS-RunIIFall17DRPremix-00183_100.root',
-#'file:/mnt/hadoop/store/group/phys_exotica/delayedjets/llpntuple/V1p7/MC_Summer16/v1/sixie/WplusH_HToSSTobbbb_WToLNu_MH-125_MS-40_ctauS-1000_TuneCUETP8M1_13TeV-powheg-pythia8/Run2_LLPNtupler_V1p7_MC_Summer16_RunIISummer16DR80Premix-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1_v1_v1/190819_001454/0000/llp_ntupler_1.root',
+#'file:/mnt/hadoop/store/group/phys_exotica/delayedjets/llpntuple/V1p7/MC_Summer16/v1/sixie/WplusH_HToSSTobbbb_WToLNu_MH-125_MS-40_ctauS-1000_TuneCUETP8M1_13TeV-powheg-pythia8/Run2_LLPNtupler_V1p7_MC_Summer16_RunIISummer16DR80Premix-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1_v1_v1/190819_001454/0000/llp_timing_ntupler_1.root',
 'file:/mnt/hadoop/store/mc/RunIISummer16DR80Premix/WminusH_HToSSTobbbb_WToLNu_MH-125_MS-40_ctauS-10000_TuneCUETP8M1_13TeV-powheg-pythia8/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/80000/7C808D45-EDCD-E611-B093-14187741278B.root',
 )
 )
@@ -70,7 +70,7 @@ process.ntuples = cms.EDAnalyzer('displacedJetTiming_ntupler',
     llpId = cms.int32(1023),
 
     genParticles_t0 = cms.InputTag("genParticles", "t0", ""),
-    triggerPathNamesFile = cms.string("cms_lpc_llp/llp_ntupler/data/trigger_names_llp_v1.dat"),
+    triggerPathNamesFile = cms.string("cms_lpc_llp/llp_timing_ntupler/data/trigger_names_llp_v1.dat"),
     eleHLTFilterNamesFile = cms.string("SUSYBSMAnalysis/RazorTuplizer/data/RazorElectronHLTFilterNames.dat"),
     muonHLTFilterNamesFile = cms.string("SUSYBSMAnalysis/RazorTuplizer/data/RazorMuonHLTFilterNames.dat"),
     photonHLTFilterNamesFile = cms.string("SUSYBSMAnalysis/RazorTuplizer/data/RazorPhotonHLTFilterNames.dat"),

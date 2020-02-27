@@ -154,10 +154,10 @@ using namespace std;
 #include "TLorentzVector.h"
 
 //LOCAL includes
-#include "cms_lpc_llp/llp_ntupler/interface/EGammaMvaEleEstimatorCSA14.h"
-#include "cms_lpc_llp/llp_ntupler/interface/ElectronMVAEstimatorRun2NonTrig.h"
-#include "cms_lpc_llp/llp_ntupler/interface/EGammaMvaPhotonEstimator.h"
-//#include "cms_lpc_llp/llp_ntupler/interface/RazorPDFWeightsHelper.h"
+//#include "cms_lpc_llp/llp_timing_ntupler/interface/EGammaMvaEleEstimatorCSA14.h"
+//#include "cms_lpc_llp/llp_timing_ntupler/interface/ElectronMVAEstimatorRun2NonTrig.h"
+//#include "cms_lpc_llp/llp_timing_ntupler/interface/EGammaMvaPhotonEstimator.h"
+//#include "cms_lpc_llp/llp_timing_ntupler/interface/RazorPDFWeightsHelper.h"
 
 //------ Array Size Constants ------//
 #define OBJECTARRAYSIZE 1000
@@ -442,9 +442,9 @@ protected:
 
 
   //MVAs for triggering and non-triggering electron ID
-  EGammaMvaEleEstimatorCSA14* myMVATrig;
-  ElectronMVAEstimatorRun2NonTrig* myMVANonTrig;
-  EGammaMvaPhotonEstimator* myPhotonMVA;
+  //EGammaMvaEleEstimatorCSA14* myMVATrig;
+  //ElectronMVAEstimatorRun2NonTrig* myMVANonTrig;
+  //EGammaMvaPhotonEstimator* myPhotonMVA;
 
 
   const reco::Vertex *myPV;
