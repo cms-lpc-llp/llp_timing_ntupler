@@ -288,7 +288,7 @@ protected:
   string eleHLTFilterNamesFile_;
   string muonHLTFilterNamesFile_;
   string photonHLTFilterNamesFile_;
-  static const int NTriggersMAX = 602;
+  static const int NTriggersMAX = 1201;
   string triggerPathNames[NTriggersMAX];
   static const int MAX_ElectronHLTFilters = 100;
   string eleHLTFilterNames[MAX_ElectronHLTFilters];
