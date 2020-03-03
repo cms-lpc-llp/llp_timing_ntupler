@@ -1691,14 +1691,14 @@ void displacedJetTiming_ntupler::resetTriggerBranches()
 //------ Method called for each run ------//
 
 void displacedJetTiming_ntupler::beginRun(const edm::Run& iRun, const edm::EventSetup& iSetup) {
-  cout << "begin Run\n";
+
 
 }
 
 
 //------ Method called for each lumi block ------//
 void displacedJetTiming_ntupler::beginLuminosityBlock(edm::LuminosityBlock const& iLumi, edm::EventSetup const&) {
-  cout << "begin LumiBlock\n";
+
 /*
   if (useGen_) {  
     iLumi.getByToken(genLumiHeaderToken_,genLumiHeader);
@@ -2900,8 +2900,6 @@ bool displacedJetTiming_ntupler::fillPhotons(const edm::Event& iEvent, const edm
 bool displacedJetTiming_ntupler::fillJets(const edm::EventSetup& iSetup)
 {
 
-  cout << "START NJETS : " << nJets << "\n";
-
   for (const reco::PFJet &j : *jets)
   {
     if (j.pt() < 20) continue;
@@ -3106,8 +3104,6 @@ bool displacedJetTiming_ntupler::fillJets(const edm::EventSetup& iSetup)
 
     nJets++;
   } //loop over jets
-
-  cout << "NJets: " << nJets << "\n";
 
   return true;
 };
