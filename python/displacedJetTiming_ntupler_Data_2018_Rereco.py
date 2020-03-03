@@ -13,7 +13,8 @@ process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
         #'/store/data/Run2018D/SingleMuon/RAW-RECO/ZMu-PromptReco-v2/000/321/121/00000/661EDBC5-929E-E811-AF23-FA163EBD19B5.root'
         #'file:/afs/cern.ch/work/s/sixie/public/Production/Reco/2018/D/CMSSW_10_2_5_patch1/src/RECO.root'
-        '/store/data/Run2018A/MET/AOD/17Sep2018-v1/60000/7395E8F8-098C-7641-AC54-45E72844A4A4.root'
+        #'/store/data/Run2018A/MET/AOD/17Sep2018-v1/60000/7395E8F8-098C-7641-AC54-45E72844A4A4.root',
+	'/store/data/Run2018A/MET/AOD/17Sep2018-v1/110000/3E1D4299-7B8E-CD4A-93E5-A10F5A3B0A86.root'
         )
 )
 
