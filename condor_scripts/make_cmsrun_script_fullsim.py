@@ -9,9 +9,10 @@ model = [ 'n3n2-n1-hbb-hbb']
 #model = [ 'n3n2-n1-zll-hbb']
 #model = ['x1n2-n1-wlv-hbb']
 #mh = [250,300,400]
-#ctau = ['pl1000']
-mh = [200,300,400]
-ctau = ['pl0']
+mh = [127, 150, 175, 200, 250, 300, 400]
+ctau = ['pl1000']
+#mh = [200,300,400]
+#ctau = ['pl0']
 
 
 pwd = os.getcwd()

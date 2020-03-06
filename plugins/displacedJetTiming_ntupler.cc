@@ -1698,6 +1698,7 @@ void displacedJetTiming_ntupler::beginRun(const edm::Run& iRun, const edm::Event
 
 //------ Method called for each lumi block ------//
 void displacedJetTiming_ntupler::beginLuminosityBlock(edm::LuminosityBlock const& iLumi, edm::EventSetup const&) {
+
 /*
   if (useGen_) {  
     iLumi.getByToken(genLumiHeaderToken_,genLumiHeader);
@@ -1724,8 +1725,8 @@ void displacedJetTiming_ntupler::analyze(const edm::Event& iEvent, const edm::Ev
   NEvents->Fill(0); //increment event count
 
   //resetting output tree branches
-
   resetBranches();
+
   fillEventInfo(iEvent);
   // fillPVAll();
   // fillPVTracks();
@@ -1734,7 +1735,7 @@ void displacedJetTiming_ntupler::analyze(const edm::Event& iEvent, const edm::Ev
   fillMuons(iEvent);
   fillMuonSystem(iEvent, iSetup);
   fillElectrons(iEvent);
-  // fillPhotons(iEvent, iSetup);
+  fillPhotons(iEvent, iSetup);
   // fillTaus();
   fillJets(iSetup);
   fillMet(iEvent);
@@ -1745,9 +1746,7 @@ void displacedJetTiming_ntupler::analyze(const edm::Event& iEvent, const edm::Ev
     fillMC();
     fillGenParticles();
   }
-
   llpTree->Fill();
-
 
 };
 
@@ -2410,7 +2409,7 @@ bool displacedJetTiming_ntupler::fillPhotons(const edm::Event& iEvent, const edm
 {
   noZS::EcalClusterLazyTools *lazyToolnoZS = new noZS::EcalClusterLazyTools(iEvent, iSetup, ebRecHitsToken_, eeRecHitsToken_);
   for (const reco::Photon &pho : *photons) {
-    //if (pho.pt() < 20) continue;
+    if (pho.pt() < 20) continue;
     std::vector<float> vCov = lazyToolnoZS->localCovariances( *(pho.superCluster()->seed()) );
     //-------------------------------------------------
     //default photon 4-mometum already vertex corrected
@@ -2904,7 +2903,7 @@ bool displacedJetTiming_ntupler::fillJets(const edm::EventSetup& iSetup)
   for (const reco::PFJet &j : *jets)
   {
     if (j.pt() < 20) continue;
-    if (fabs(j.eta()) > 2.4) continue;
+    // if (fabs(j.eta()) > 2.4) continue;
     //-------------------
     //Fill Jet-Level Info
     //-------------------

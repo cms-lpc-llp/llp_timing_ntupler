@@ -35,7 +35,7 @@ cd /storage/user/jmao/login-1/jmao/CMSSW_9_4_9/src/cms_lpc_llp/jet_timing_studie
 gfal-copy bbbb_ggh_mh125_mx50_pl500_signal_aod_test.py ${runDir}
 
 #Run cmsenv in an existing CMSSW directory on login-1
-cd /storage/user/jmao/login-1/jmao/CMSSW_9_4_9/src
+cd /storage/user/jmao/login-1/jmao/CMSSW_9_4_9/src/cms_lpc_llp/jet_timing_studies/condor_scripts
 source /cvmfs/cms.cern.ch/cmsset_default.sh
 eval `scramv1 runtime -sh`
 

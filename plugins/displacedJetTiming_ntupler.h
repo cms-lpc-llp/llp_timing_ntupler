@@ -154,15 +154,16 @@ using namespace std;
 #include "TLorentzVector.h"
 
 //LOCAL includes
-#include "cms_lpc_llp/llp_ntupler/interface/EGammaMvaEleEstimatorCSA14.h"
-#include "cms_lpc_llp/llp_ntupler/interface/ElectronMVAEstimatorRun2NonTrig.h"
-#include "cms_lpc_llp/llp_ntupler/interface/EGammaMvaPhotonEstimator.h"
-//#include "cms_lpc_llp/llp_ntupler/interface/RazorPDFWeightsHelper.h"
+//#include "cms_lpc_llp/llp_timing_ntupler/interface/EGammaMvaEleEstimatorCSA14.h"
+//#include "cms_lpc_llp/llp_timing_ntupler/interface/ElectronMVAEstimatorRun2NonTrig.h"
+//#include "cms_lpc_llp/llp_timing_ntupler/interface/EGammaMvaPhotonEstimator.h"
+//#include "cms_lpc_llp/llp_timing_ntupler/interface/RazorPDFWeightsHelper.h"
 
 //------ Array Size Constants ------//
 #define OBJECTARRAYSIZE 1000
+#define CSCRECHITARRAYSIZE 100000
 #define TRACKARRAYSIZE 3000
-#define RECHITARRAYSIZE 2000
+#define RECHITARRAYSIZE 20000
 #define GENPARTICLEARRAYSIZE 2000
 #define MAX_NPV 1000
 #define MAX_NTRACK 2000
@@ -288,7 +289,7 @@ protected:
   string eleHLTFilterNamesFile_;
   string muonHLTFilterNamesFile_;
   string photonHLTFilterNamesFile_;
-  static const int NTriggersMAX = 602;
+  static const int NTriggersMAX = 1201;
   string triggerPathNames[NTriggersMAX];
   static const int MAX_ElectronHLTFilters = 100;
   string eleHLTFilterNames[MAX_ElectronHLTFilters];
@@ -442,9 +443,9 @@ protected:
 
 
   //MVAs for triggering and non-triggering electron ID
-  EGammaMvaEleEstimatorCSA14* myMVATrig;
-  ElectronMVAEstimatorRun2NonTrig* myMVANonTrig;
-  EGammaMvaPhotonEstimator* myPhotonMVA;
+  //EGammaMvaEleEstimatorCSA14* myMVATrig;
+  //ElectronMVAEstimatorRun2NonTrig* myMVANonTrig;
+  //EGammaMvaPhotonEstimator* myPhotonMVA;
 
 
   const reco::Vertex *myPV;
@@ -733,36 +734,36 @@ float pho_pfClusterSeedE[OBJECTARRAYSIZE];
 
   //Muon system
   int nCsc;
-  float cscPhi[OBJECTARRAYSIZE];
-  float cscEta[OBJECTARRAYSIZE];
-  float cscX[OBJECTARRAYSIZE];
-  float cscY[OBJECTARRAYSIZE];
-  float cscZ[OBJECTARRAYSIZE];
-  float cscNRecHits[OBJECTARRAYSIZE];
-  float cscNRecHits_flag[OBJECTARRAYSIZE];
-  float cscT[OBJECTARRAYSIZE];
-  float cscChi2[OBJECTARRAYSIZE];
+  float cscPhi[CSCRECHITARRAYSIZE];
+  float cscEta[CSCRECHITARRAYSIZE];
+  float cscX[CSCRECHITARRAYSIZE];
+  float cscY[CSCRECHITARRAYSIZE];
+  float cscZ[CSCRECHITARRAYSIZE];
+  float cscNRecHits[CSCRECHITARRAYSIZE];
+  float cscNRecHits_flag[CSCRECHITARRAYSIZE];
+  float cscT[CSCRECHITARRAYSIZE];
+  float cscChi2[CSCRECHITARRAYSIZE];
 
   int nRpc;
-  float rpcPhi[OBJECTARRAYSIZE];
-  float rpcEta[OBJECTARRAYSIZE];
-  float rpcX[OBJECTARRAYSIZE];
-  float rpcY[OBJECTARRAYSIZE];
-  float rpcZ[OBJECTARRAYSIZE];
-  float rpcT[OBJECTARRAYSIZE];
-  float rpcTError[OBJECTARRAYSIZE];
+  float rpcPhi[CSCRECHITARRAYSIZE];
+  float rpcEta[CSCRECHITARRAYSIZE];
+  float rpcX[CSCRECHITARRAYSIZE];
+  float rpcY[CSCRECHITARRAYSIZE];
+  float rpcZ[CSCRECHITARRAYSIZE];
+  float rpcT[CSCRECHITARRAYSIZE];
+  float rpcTError[CSCRECHITARRAYSIZE];
 
   int nDt;
-  float dtPhi[OBJECTARRAYSIZE];
-  float dtEta[OBJECTARRAYSIZE];
-  float dtX[OBJECTARRAYSIZE];
-  float dtY[OBJECTARRAYSIZE];
-  float dtZ[OBJECTARRAYSIZE];
-  float dtDirX[OBJECTARRAYSIZE];
-  float dtDirY[OBJECTARRAYSIZE];
-  float dtDirZ[OBJECTARRAYSIZE];
-  float dtT[OBJECTARRAYSIZE];
-  float dtTError[OBJECTARRAYSIZE];
+  float dtPhi[CSCRECHITARRAYSIZE];
+  float dtEta[CSCRECHITARRAYSIZE];
+  float dtX[CSCRECHITARRAYSIZE];
+  float dtY[CSCRECHITARRAYSIZE];
+  float dtZ[CSCRECHITARRAYSIZE];
+  float dtDirX[CSCRECHITARRAYSIZE];
+  float dtDirY[CSCRECHITARRAYSIZE];
+  float dtDirZ[CSCRECHITARRAYSIZE];
+  float dtT[CSCRECHITARRAYSIZE];
+  float dtTError[CSCRECHITARRAYSIZE];
 
  //AK4 Jets
  int nJets;

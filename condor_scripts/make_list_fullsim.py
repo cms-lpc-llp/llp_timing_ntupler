@@ -6,10 +6,10 @@ import subprocess, time, sys, shlex
 #model = ['x1n2-n1-wlv-hbb', 'n3n2-n1-zll-hbb']
 #model = ['n3n2-n1-hbb-hbb', 'n3n2-n1-zll-hbb']
 model = ['n3n2-n1-hbb-hbb']
-#mh = [250,300,400]
-#ctau = ['pl1000']
-mh = [200,300,400]
-ctau = ['pl0']
+mh = [200]
+ctau = ['pl1000']
+#mh = [127, 150, 175, 200, 250, 300, 400]
+#ctau = ['pl0']
 
 pwd = os.getcwd()
 home_dir = '/mnt/hadoop/store/group/phys_exotica/jmao/aodsim/RunIISummer16/AODSIM/'

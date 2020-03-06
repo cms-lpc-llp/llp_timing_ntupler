@@ -4,7 +4,6 @@ from FWCore.ParameterSet.VarParsing import VarParsing
 
 #initialize the process
 process = cms.Process("LLPNtupler")
-
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.load("PhysicsTools.PatAlgos.producersLayer1.patCandidates_cff")
 process.load("Configuration.EventContent.EventContent_cff")
@@ -12,19 +11,17 @@ process.load("Configuration.EventContent.EventContent_cff")
 #load input files
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-#'file:/mnt/hadoop/store/group/phys_exotica/jmao/aodsim/RunIISummer16/AODSIM/MSSM-2d-prod/x1n2-n1-wlv-hbb_mh200_pl100_ev100000/crab_CMSSW_9_4_12_x1n2-n1-wlv-hbb_mchi200__mlsp150_pl100_ev100000_AODSIM_CaltechT2/191007_025612/0000/SUS-RunIIFall17DRPremix-00183_100.root',
-#'file:/mnt/hadoop/store/group/phys_exotica/delayedjets/llpntuple/V1p7/MC_Summer16/v1/sixie/WplusH_HToSSTobbbb_WToLNu_MH-125_MS-40_ctauS-1000_TuneCUETP8M1_13TeV-powheg-pythia8/Run2_LLPNtupler_V1p7_MC_Summer16_RunIISummer16DR80Premix-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1_v1_v1/190819_001454/0000/llp_timing_ntupler_1.root',
-'file:/mnt/hadoop/store/mc/RunIISummer16DR80Premix/WminusH_HToSSTobbbb_WToLNu_MH-125_MS-40_ctauS-10000_TuneCUETP8M1_13TeV-powheg-pythia8/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/80000/7C808D45-EDCD-E611-B093-14187741278B.root',
+	#inputfilename
 )
 )
 
-#process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(20) )
-process.MessageLogger.cerr.FwkReport.reportEvery = 1
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+#process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(2000) )
+process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 
 #TFileService for output
 process.TFileService = cms.Service("TFileService",
- 	fileName = cms.string('displacedJetTiming_ntupler_metbb_vh_ISR_mh125_mx40_pl10000_ev100000.root'),
+	fileName = cms.string('outputfilename'),
     closeFileFast = cms.untracked.bool(True)
 )
 
@@ -38,7 +35,6 @@ process.load('Configuration.StandardSequences.MagneticField_38T_cff')
 
 #process.GlobalTag.globaltag = '94X_mc2017_realistic_v17'
 process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_v3'
-#process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_TrancheIV_v8'
 
 #------ If we add any inputs beyond standard miniAOD event content, import them here ------#
 
